@@ -111,14 +111,14 @@ const getSummary = async(req,res)=>{
   try{
     const userId = req.user._id;
 
-    // Total spending grouped by category — feeds a pie/bar chart
+    // Total spending grouped by category — feeds a pie chart
     const byCategory = await Expense.aggregate([
       {$match: { userId }},
       {$group: { _id:'$category', total: {$sum:'$amount'}}},
       {$sort: { total :-1}},
     ]);
 
-    // Total spending grouped by month — feeds a line/bar chart over time
+    // Total spending grouped by month — feeds a bar chart over time
     const byMonth = await Expense.aggregate([
       {$match: { userId }},
       {
@@ -144,7 +144,7 @@ const getSummary = async(req,res)=>{
     });
   }
   catch(error){
-    res.status(500).json({message: 'server error', error:err.message});
+    res.status(500).json({message: 'server error', error:error.message});
   }
 };
 
